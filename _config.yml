@@ -20,9 +20,9 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "README.md", title: About Me}
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
-  - {title: Mail, icon: envelope, url: "mailto:niklasbuschmann@users.noreply.github.com"}
-  - {title: Github, icon: github, url: "https://github.com/niklasbuschmann/contrast"}
-  - {title: Subscribe, icon: rss, url: "/feed.xml"}
+  - {title: Mail, icon: envelope, url: "mailto:cjunjie2022@BUPT.edu.cn"}
+  - {title: Github, icon: github, url: "https://github.com/Kiid-A"}
+  - {title: Bilibili, icon: rss, url: "https://space.bilibili.com/100384762"}
 
 comments:
 #  disqus_shortname: ""    # see https://disqus.com/
