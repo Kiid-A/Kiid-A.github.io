@@ -1,8 +1,8 @@
-title: "Blog Title"
-author: "Blog Author"
-description: "Made with <b style=\"color: #f45;\">&lt;3</b>"
+title: "个人空间站"
+author: "克隆人一号"
+description: "Made with LOVE style=\"color: #f45;\">&lt;3</b>"
 permalink: /:title/
-lang: "en"
+lang: "zh"
 excerpt_separator: "\n\n\n"
 date_format: "%B %d, %Y"
 
