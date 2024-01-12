@@ -1,6 +1,6 @@
 title: "Kid A"
 author: "Kid A"
-description: "Made with LOVE style=\"color: #f45;\">&lt;3</b>"
+description: "Made with <text style=\"color: #f45;\">LOVE</text>"
 permalink: /:title/
 lang: "en"
 excerpt_separator: "\n\n\n"
