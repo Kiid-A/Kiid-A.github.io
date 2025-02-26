@@ -4,6 +4,32 @@
   
   
   <entry>
+    <title>四种隔离级别的思考</title>
+    <link href="/2025/02/26/Txn/"/>
+    <url>/2025/02/26/Txn/</url>
+    
+    <content type="html"><![CDATA[<h1 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h1><p>整体分为：</p><ol><li>读未提交</li><li>读已提交</li><li>可重复读</li><li>串行化</li></ol><h2 id="可能产生的问题"><a href="#可能产生的问题" class="headerlink" title="可能产生的问题"></a>可能产生的问题</h2><ol><li>脏读：读到其他事务未提交的数据，容易理解</li><li>不可重复读：多次读同一行内容不一致</li><li>幻读：多次读某个范围的数据，范围不一致（有插入删除）</li></ol><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>脏读和不可重复度：脏读可以认为事务B单次读取数据，读到事务A修改但未提交的数据。不可重复读可以看作事务B在事务A修改前后分别读了一次，得到的数据自然不同。</p><p>不可重复读和幻读：不可重复读按照上述，主要冲突在一次事务内读同一行两次数据不同。幻读可以认为是事务B读取某一范围的数据，而事务A在B的两次读取之间对该范围插入或删除了数据。产生一次读2条，第二次读3条的错误。</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>通过产生的原因可以想到对应解决办法</p><h3 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h3><p>通过MVCC（读快照），避免读到其他事务做出的修改。</p><h3 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>MVCC给每个事务生成最新快照，避免事务之间互相影响。</p><h3 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h3><p>MVCC无法拦住边读边写的幻读。当数据出现更新，会悄悄把更新数据加进来。因此需要间隙锁或临键锁。</p><ol><li>间隙锁：范围锁，比如查询age&gt;20，会锁住该范围阻隔新数据加入&#x2F;旧数据修改。</li><li>临键锁：反向间隙锁，同样查询age&gt;20，会锁住&lt;&#x3D;20的范围，阻止你加入新数据。</li></ol><h2 id="为什么有四种"><a href="#为什么有四种" class="headerlink" title="为什么有四种"></a>为什么有四种</h2><p><strong>为什么有四种隔离级别？既然低级别会产生错误，直接上高级别一刀切不就好了？</strong></p><p>数据库性能与一致性的互相妥协。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>raft</title>
+    <link href="/2025/02/24/raft/"/>
+    <url>/2025/02/24/raft/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>这是一个测试</title>
     <link href="/2025/02/24/%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E6%B5%8B%E8%AF%95/"/>
     <url>/2025/02/24/%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E6%B5%8B%E8%AF%95/</url>

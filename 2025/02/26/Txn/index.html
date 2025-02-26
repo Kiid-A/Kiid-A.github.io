@@ -19,25 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这是一个测试123456#include &lt;stdio.h&gt;int main() &#123;    printf(&quot;hello world\n&quot;);	return 0;&#125;  标题1标题2">
+    <meta name="description" content="事务隔离级别整体分为：  读未提交 读已提交 可重复读 串行化  可能产生的问题 脏读：读到其他事务未提交的数据，容易理解 不可重复读：多次读同一行内容不一致 幻读：多次读某个范围的数据，范围不一致（有插入删除）  区别脏读和不可重复度：脏读可以认为事务B单次读取数据，读到事务A修改但未提交的数据。不可重复读可以看作事务B在事务A修改前后分别读了一次，得到的数据自然不同。 不可重复读和幻读：不可重">
 <meta property="og:type" content="article">
-<meta property="og:title" content="这是一个测试">
-<meta property="og:url" content="https://kiid-a.github.io/2025/02/24/%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:title" content="四种隔离级别的思考">
+<meta property="og:url" content="https://kiid-a.github.io/2025/02/26/Txn/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="这是一个测试123456#include &lt;stdio.h&gt;int main() &#123;    printf(&quot;hello world\n&quot;);	return 0;&#125;  标题1标题2">
+<meta property="og:description" content="事务隔离级别整体分为：  读未提交 读已提交 可重复读 串行化  可能产生的问题 脏读：读到其他事务未提交的数据，容易理解 不可重复读：多次读同一行内容不一致 幻读：多次读某个范围的数据，范围不一致（有插入删除）  区别脏读和不可重复度：脏读可以认为事务B单次读取数据，读到事务A修改但未提交的数据。不可重复读可以看作事务B在事务A修改前后分别读了一次，得到的数据自然不同。 不可重复读和幻读：不可重">
 <meta property="og:locale">
-<meta property="og:image" content="https://kiid-a.github.io/%E6%B5%8B%E8%AF%95">
-<meta property="article:published_time" content="2025-02-24T00:33:33.215Z">
-<meta property="article:modified_time" content="2025-02-24T00:37:11.186Z">
+<meta property="article:published_time" content="2025-02-26T01:03:59.000Z">
+<meta property="article:modified_time" content="2025-02-26T01:26:34.015Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="测试1">
-<meta property="article:tag" content="测试2">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://kiid-a.github.io/%E6%B5%8B%E8%AF%95">
   
   
   
-  <title>这是一个测试 - Hexo</title>
+  <title>四种隔离级别的思考 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -203,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="这是一个测试"></span>
+            <span id="subtitle" data-typed-text="四种隔离级别的思考"></span>
           
         </div>
 
@@ -214,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-02-24 08:33" pubdate>
-          February 24, 2025 am
+        <time datetime="2025-02-26 09:03" pubdate>
+          February 26, 2025 am
         </time>
       </span>
     
@@ -226,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          26 wörter
+          486 wörter
         
       </span>
     
@@ -237,7 +233,7 @@
         
         
         
-          1 minuten
+          5 minuten
         
       </span>
     
@@ -274,14 +270,36 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">这是一个测试</h1>
+            <h1 id="seo-header">四种隔离级别的思考</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="这是一个测试"><a href="#这是一个测试" class="headerlink" title="这是一个测试"></a>这是一个测试</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello world\n&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+                <h1 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h1><p>整体分为：</p>
+<ol>
+<li>读未提交</li>
+<li>读已提交</li>
+<li>可重复读</li>
+<li>串行化</li>
+</ol>
+<h2 id="可能产生的问题"><a href="#可能产生的问题" class="headerlink" title="可能产生的问题"></a>可能产生的问题</h2><ol>
+<li>脏读：读到其他事务未提交的数据，容易理解</li>
+<li>不可重复读：多次读同一行内容不一致</li>
+<li>幻读：多次读某个范围的数据，范围不一致（有插入删除）</li>
+</ol>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>脏读和不可重复度：脏读可以认为事务B单次读取数据，读到事务A修改但未提交的数据。不可重复读可以看作事务B在事务A修改前后分别读了一次，得到的数据自然不同。</p>
+<p>不可重复读和幻读：不可重复读按照上述，主要冲突在一次事务内读同一行两次数据不同。幻读可以认为是事务B读取某一范围的数据，而事务A在B的两次读取之间对该范围插入或删除了数据。产生一次读2条，第二次读3条的错误。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>通过产生的原因可以想到对应解决办法</p>
+<h3 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h3><p>通过MVCC（读快照），避免读到其他事务做出的修改。</p>
+<h3 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>MVCC给每个事务生成最新快照，避免事务之间互相影响。</p>
+<h3 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h3><p>MVCC无法拦住边读边写的幻读。当数据出现更新，会悄悄把更新数据加进来。因此需要间隙锁或临键锁。</p>
+<ol>
+<li>间隙锁：范围锁，比如查询age&gt;20，会锁住该范围阻隔新数据加入&#x2F;旧数据修改。</li>
+<li>临键锁：反向间隙锁，同样查询age&gt;20，会锁住&lt;&#x3D;20的范围，阻止你加入新数据。</li>
+</ol>
+<h2 id="为什么有四种"><a href="#为什么有四种" class="headerlink" title="为什么有四种"></a>为什么有四种</h2><p><strong>为什么有四种隔离级别？既然低级别会产生错误，直接上高级别一刀切不就好了？</strong></p>
+<p>数据库性能与一致性的互相妥协。</p>
 
-<h2 id="标题1"><a href="#标题1" class="headerlink" title="标题1"></a>标题1</h2><h3 id="标题2"><a href="#标题2" class="headerlink" title="标题2"></a>标题2</h3>
                 
               </div>
             
@@ -289,36 +307,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%B5%8B%E8%AF%95/" class="category-chain-item">测试</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/%E6%B5%8B%E8%AF%951/" class="print-no-link">#测试1</a>
-      
-        <a href="/tags/%E6%B5%8B%E8%AF%952/" class="print-no-link">#测试2</a>
-      
-    </div>
   
 </div>
 
@@ -328,8 +316,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>这是一个测试</div>
-      <div>https://kiid-a.github.io/2025/02/24/这是一个测试/</div>
+      <div>四种隔离级别的思考</div>
+      <div>https://kiid-a.github.io/2025/02/26/Txn/</div>
     </div>
     <div class="license-meta">
       
@@ -341,7 +329,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Veröffentlicht am</div>
-          <div>February 24, 2025</div>
+          <div>February 26, 2025</div>
         </div>
       
       
@@ -373,18 +361,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/02/24/raft/" title="raft">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">raft</span>
-                        <span class="visible-mobile">Vorheriger</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/02/24/%E6%B5%8B%E8%AF%95/" title="测试">
-                        <span class="hidden-mobile">测试</span>
+                      <a href="/2025/02/24/raft/" title="raft">
+                        <span class="hidden-mobile">raft</span>
                         <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
