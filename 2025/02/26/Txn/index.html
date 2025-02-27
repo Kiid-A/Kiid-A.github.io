@@ -27,7 +27,7 @@
 <meta property="og:description" content="事务隔离级别整体分为：  读未提交 读已提交 可重复读 串行化  可能产生的问题 脏读：读到其他事务未提交的数据，容易理解 不可重复读：多次读同一行内容不一致 幻读：多次读某个范围的数据，范围不一致（有插入删除）  区别脏读和不可重复度：脏读可以认为事务B单次读取数据，读到事务A修改但未提交的数据。不可重复读可以看作事务B在事务A修改前后分别读了一次，得到的数据自然不同。 不可重复读和幻读：不可重">
 <meta property="og:locale">
 <meta property="article:published_time" content="2025-02-26T01:03:59.000Z">
-<meta property="article:modified_time" content="2025-02-26T01:28:49.584Z">
+<meta property="article:modified_time" content="2025-02-27T04:33:44.107Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          486 vortoj
+          472 wörter
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          5 minutoj
+          4 minuten
         
       </span>
     
@@ -295,8 +295,8 @@
 <h3 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>MVCC给每个事务生成最新快照，避免事务之间互相影响。</p>
 <h3 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h3><p>MVCC无法拦住边读边写的幻读。当数据出现更新，会悄悄把更新数据加进来。因此需要间隙锁或临键锁。</p>
 <ol>
-<li>间隙锁：范围锁，比如查询age&gt;20，会锁住该范围阻隔新数据加入&#x2F;旧数据修改。</li>
-<li>临键锁：反向间隙锁，同样查询age&gt;20，会锁住&lt;&#x3D;20的范围，阻止你加入新数据。</li>
+<li>间隙锁：范围锁，比如查询age&gt;20，会锁住(20,+inf)阻隔新数据加入&#x2F;旧数据修改。</li>
+<li>临键锁：范围+当前键，比如age&gt;20，可以得到[20,+inf)</li>
 </ol>
 <h2 id="为什么有四种"><a href="#为什么有四种" class="headerlink" title="为什么有四种"></a>为什么有四种</h2><p><strong>为什么有四种隔离级别？既然低级别会产生错误，直接上高级别一刀切不就好了？</strong></p>
 <p>数据库性能与一致性的互相妥协。</p>
@@ -330,20 +330,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Aŭtoro</div>
+          <div>Beitragsautor</div>
           <div>John Doe</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Postigita</div>
+          <div>Veröffentlicht am</div>
           <div>February 26, 2025</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Lizenta</div>
+          <div>Urheberrechtshinweis</div>
           <div>
             
               
@@ -369,13 +369,19 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2025/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E9%94%81/" title="数据库的锁">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库的锁</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
                       <a href="/2025/02/24/raft/" title="raft">
                         <span class="hidden-mobile">raft</span>
-                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -396,7 +402,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Enhavtabelo</span>
+    <span>Inhaltsverzeichnis</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -452,7 +458,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -460,7 +466,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -638,7 +644,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>

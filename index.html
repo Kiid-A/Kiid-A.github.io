@@ -227,6 +227,48 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2025/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E9%94%81/" target="_self">
+          数据库的锁
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E9%94%81/" target="_self">
+        <div>
+          锁全局锁让数据库变成read only 表级锁 表锁：给表加锁，同时本线程无法访问其他表 元数据锁：对表操作隐式使用 意向锁：行级锁之前，快速判断有无记录被加锁 AUTO-INC锁：用于自增类型的加锁，不然容易出错  行级锁 Record Lock：锁记录 Gap Lock：锁范围（开区间）。间隙锁之间是兼容的的，可以由多个事务持有重复区间的间隙锁。 Next-Key Lock：记录锁+间隙锁（一
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-27 12:32" pubdate>
+              2025-02-27
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+            
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">#分布式系统</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2025/02/26/Txn/" target="_self">
           四种隔离级别的思考
         </a>
@@ -452,7 +494,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -460,7 +502,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -545,7 +587,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>

@@ -19,25 +19,23 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这是一个测试123456#include &lt;stdio.h&gt;int main() &#123;    printf(&quot;hello world\n&quot;);	return 0;&#125;  标题1标题2">
+    <meta name="description" content="锁全局锁让数据库变成read only 表级锁 表锁：给表加锁，同时本线程无法访问其他表 元数据锁：对表操作隐式使用 意向锁：行级锁之前，快速判断有无记录被加锁 AUTO-INC锁：用于自增类型的加锁，不然容易出错  行级锁 Record Lock：锁记录 Gap Lock：锁范围（开区间）。间隙锁之间是兼容的的，可以由多个事务持有重复区间的间隙锁。 Next-Key Lock：记录锁+间隙锁（一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="这是一个测试">
-<meta property="og:url" content="https://kiid-a.github.io/2025/02/24/%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:title" content="数据库的锁">
+<meta property="og:url" content="https://kiid-a.github.io/2025/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E9%94%81/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="这是一个测试123456#include &lt;stdio.h&gt;int main() &#123;    printf(&quot;hello world\n&quot;);	return 0;&#125;  标题1标题2">
+<meta property="og:description" content="锁全局锁让数据库变成read only 表级锁 表锁：给表加锁，同时本线程无法访问其他表 元数据锁：对表操作隐式使用 意向锁：行级锁之前，快速判断有无记录被加锁 AUTO-INC锁：用于自增类型的加锁，不然容易出错  行级锁 Record Lock：锁记录 Gap Lock：锁范围（开区间）。间隙锁之间是兼容的的，可以由多个事务持有重复区间的间隙锁。 Next-Key Lock：记录锁+间隙锁（一">
 <meta property="og:locale">
-<meta property="og:image" content="https://kiid-a.github.io/%E6%B5%8B%E8%AF%95">
-<meta property="article:published_time" content="2025-02-24T00:33:33.215Z">
-<meta property="article:modified_time" content="2025-02-24T00:37:11.186Z">
+<meta property="article:published_time" content="2025-02-27T04:32:48.000Z">
+<meta property="article:modified_time" content="2025-02-27T04:33:55.327Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="测试1">
-<meta property="article:tag" content="测试2">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="分布式系统">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://kiid-a.github.io/%E6%B5%8B%E8%AF%95">
   
   
   
-  <title>这是一个测试 - Hexo</title>
+  <title>数据库的锁 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -203,7 +201,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="这是一个测试"></span>
+            <span id="subtitle" data-typed-text="数据库的锁"></span>
           
         </div>
 
@@ -214,8 +212,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-02-24 08:33" pubdate>
-          February 24, 2025 am
+        <time datetime="2025-02-27 12:32" pubdate>
+          February 27, 2025 pm
         </time>
       </span>
     
@@ -226,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          26 wörter
+          287 wörter
         
       </span>
     
@@ -237,7 +235,7 @@
         
         
         
-          1 minuten
+          3 minuten
         
       </span>
     
@@ -274,14 +272,34 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">这是一个测试</h1>
+            <h1 id="seo-header">数据库的锁</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="这是一个测试"><a href="#这是一个测试" class="headerlink" title="这是一个测试"></a>这是一个测试</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello world\n&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+                <h1 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h1><h2 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h2><p>让数据库变成read only</p>
+<h2 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h2><ol>
+<li>表锁：给表加锁，同时本线程无法访问其他表</li>
+<li>元数据锁：对表操作隐式使用</li>
+<li>意向锁：行级锁之前，快速判断有无记录被加锁</li>
+<li>AUTO-INC锁：用于自增类型的加锁，不然容易出错</li>
+</ol>
+<h2 id="行级锁"><a href="#行级锁" class="headerlink" title="行级锁"></a>行级锁</h2><ol>
+<li>Record Lock：锁记录</li>
+<li>Gap Lock：锁范围（开区间）。间隙锁之间是兼容的的，可以由多个事务持有重复区间的间隙锁。</li>
+<li>Next-Key Lock：记录锁+间隙锁（一开一闭）。既保护了当前记录，又阻止间隙之间有新值插入。</li>
+<li>插入意向锁：用于插入时占用锁等待队列。</li>
+</ol>
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>一致性，有效性，防止脑裂-&gt;过半节点同意。</p>
+<h3 id="基于Redis"><a href="#基于Redis" class="headerlink" title="基于Redis"></a>基于Redis</h3><p>设置一个公共的Key和对应过期时间。Key&#x3D;0可以获得锁，否则不行。</p>
+<h2 id="加锁时机"><a href="#加锁时机" class="headerlink" title="加锁时机"></a>加锁时机</h2><p>select update…</p>
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>两个事务获得了公共的间隙锁，但是插入意向锁和对方的间隙锁起了冲突。</p>
+<p><strong>解决方案</strong></p>
+<ol>
+<li>降低隔离级别，RC就不会使用gap lock</li>
+<li>使用唯一索引，避免全表扫描…</li>
+</ol>
 
-<h2 id="标题1"><a href="#标题1" class="headerlink" title="标题1"></a>标题1</h2><h3 id="标题2"><a href="#标题2" class="headerlink" title="标题2"></a>标题2</h3>
                 
               </div>
             
@@ -289,34 +307,13 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%B5%8B%E8%AF%95/" class="category-chain-item">测试</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%B5%8B%E8%AF%951/" class="print-no-link">#测试1</a>
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="print-no-link">#数据库</a>
       
-        <a href="/tags/%E6%B5%8B%E8%AF%952/" class="print-no-link">#测试2</a>
+        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" class="print-no-link">#分布式系统</a>
       
     </div>
   
@@ -328,8 +325,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>这是一个测试</div>
-      <div>https://kiid-a.github.io/2025/02/24/这是一个测试/</div>
+      <div>数据库的锁</div>
+      <div>https://kiid-a.github.io/2025/02/27/数据库的锁/</div>
     </div>
     <div class="license-meta">
       
@@ -341,7 +338,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Veröffentlicht am</div>
-          <div>February 24, 2025</div>
+          <div>February 27, 2025</div>
         </div>
       
       
@@ -373,18 +370,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/02/24/raft/" title="raft">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">raft</span>
-                        <span class="visible-mobile">Vorheriger</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/02/24/%E6%B5%8B%E8%AF%95/" title="测试">
-                        <span class="hidden-mobile">测试</span>
+                      <a href="/2025/02/26/Txn/" title="四种隔离级别的思考">
+                        <span class="hidden-mobile">四种隔离级别的思考</span>
                         <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -4,11 +4,32 @@
   
   
   <entry>
+    <title>数据库的锁</title>
+    <link href="/2025/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E9%94%81/"/>
+    <url>/2025/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E9%94%81/</url>
+    
+    <content type="html"><![CDATA[<h1 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h1><h2 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h2><p>让数据库变成read only</p><h2 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h2><ol><li>表锁：给表加锁，同时本线程无法访问其他表</li><li>元数据锁：对表操作隐式使用</li><li>意向锁：行级锁之前，快速判断有无记录被加锁</li><li>AUTO-INC锁：用于自增类型的加锁，不然容易出错</li></ol><h2 id="行级锁"><a href="#行级锁" class="headerlink" title="行级锁"></a>行级锁</h2><ol><li>Record Lock：锁记录</li><li>Gap Lock：锁范围（开区间）。间隙锁之间是兼容的的，可以由多个事务持有重复区间的间隙锁。</li><li>Next-Key Lock：记录锁+间隙锁（一开一闭）。既保护了当前记录，又阻止间隙之间有新值插入。</li><li>插入意向锁：用于插入时占用锁等待队列。</li></ol><h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>一致性，有效性，防止脑裂-&gt;过半节点同意。</p><h3 id="基于Redis"><a href="#基于Redis" class="headerlink" title="基于Redis"></a>基于Redis</h3><p>设置一个公共的Key和对应过期时间。Key&#x3D;0可以获得锁，否则不行。</p><h2 id="加锁时机"><a href="#加锁时机" class="headerlink" title="加锁时机"></a>加锁时机</h2><p>select update…</p><h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>两个事务获得了公共的间隙锁，但是插入意向锁和对方的间隙锁起了冲突。</p><p><strong>解决方案</strong></p><ol><li>降低隔离级别，RC就不会使用gap lock</li><li>使用唯一索引，避免全表扫描…</li></ol>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>数据库</tag>
+      
+      <tag>分布式系统</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>四种隔离级别的思考</title>
     <link href="/2025/02/26/Txn/"/>
     <url>/2025/02/26/Txn/</url>
     
-    <content type="html"><![CDATA[<h1 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h1><p>整体分为：</p><ol><li>读未提交</li><li>读已提交</li><li>可重复读</li><li>串行化</li></ol><h2 id="可能产生的问题"><a href="#可能产生的问题" class="headerlink" title="可能产生的问题"></a>可能产生的问题</h2><ol><li>脏读：读到其他事务未提交的数据，容易理解</li><li>不可重复读：多次读同一行内容不一致</li><li>幻读：多次读某个范围的数据，范围不一致（有插入删除）</li></ol><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>脏读和不可重复度：脏读可以认为事务B单次读取数据，读到事务A修改但未提交的数据。不可重复读可以看作事务B在事务A修改前后分别读了一次，得到的数据自然不同。</p><p>不可重复读和幻读：不可重复读按照上述，主要冲突在一次事务内读同一行两次数据不同。幻读可以认为是事务B读取某一范围的数据，而事务A在B的两次读取之间对该范围插入或删除了数据。产生一次读2条，第二次读3条的错误。</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>通过产生的原因可以想到对应解决办法</p><h3 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h3><p>通过MVCC（读快照），避免读到其他事务做出的修改。</p><h3 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>MVCC给每个事务生成最新快照，避免事务之间互相影响。</p><h3 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h3><p>MVCC无法拦住边读边写的幻读。当数据出现更新，会悄悄把更新数据加进来。因此需要间隙锁或临键锁。</p><ol><li>间隙锁：范围锁，比如查询age&gt;20，会锁住该范围阻隔新数据加入&#x2F;旧数据修改。</li><li>临键锁：反向间隙锁，同样查询age&gt;20，会锁住&lt;&#x3D;20的范围，阻止你加入新数据。</li></ol><h2 id="为什么有四种"><a href="#为什么有四种" class="headerlink" title="为什么有四种"></a>为什么有四种</h2><p><strong>为什么有四种隔离级别？既然低级别会产生错误，直接上高级别一刀切不就好了？</strong></p><p>数据库性能与一致性的互相妥协。</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h1><p>整体分为：</p><ol><li>读未提交</li><li>读已提交</li><li>可重复读</li><li>串行化</li></ol><h2 id="可能产生的问题"><a href="#可能产生的问题" class="headerlink" title="可能产生的问题"></a>可能产生的问题</h2><ol><li>脏读：读到其他事务未提交的数据，容易理解</li><li>不可重复读：多次读同一行内容不一致</li><li>幻读：多次读某个范围的数据，范围不一致（有插入删除）</li></ol><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>脏读和不可重复度：脏读可以认为事务B单次读取数据，读到事务A修改但未提交的数据。不可重复读可以看作事务B在事务A修改前后分别读了一次，得到的数据自然不同。</p><p>不可重复读和幻读：不可重复读按照上述，主要冲突在一次事务内读同一行两次数据不同。幻读可以认为是事务B读取某一范围的数据，而事务A在B的两次读取之间对该范围插入或删除了数据。产生一次读2条，第二次读3条的错误。</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>通过产生的原因可以想到对应解决办法</p><h3 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h3><p>通过MVCC（读快照），避免读到其他事务做出的修改。</p><h3 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>MVCC给每个事务生成最新快照，避免事务之间互相影响。</p><h3 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h3><p>MVCC无法拦住边读边写的幻读。当数据出现更新，会悄悄把更新数据加进来。因此需要间隙锁或临键锁。</p><ol><li>间隙锁：范围锁，比如查询age&gt;20，会锁住(20,+inf)阻隔新数据加入&#x2F;旧数据修改。</li><li>临键锁：范围+当前键，比如age&gt;20，可以得到[20,+inf)</li></ol><h2 id="为什么有四种"><a href="#为什么有四种" class="headerlink" title="为什么有四种"></a>为什么有四种</h2><p><strong>为什么有四种隔离级别？既然低级别会产生错误，直接上高级别一刀切不就好了？</strong></p><p>数据库性能与一致性的互相妥协。</p>]]></content>
     
     
     
